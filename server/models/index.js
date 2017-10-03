@@ -74,7 +74,7 @@ const Restaurant = db.define('restaurant', {
     }
 });
 
-Restaurant.belongsTo(Place, { onDelete: 'cascade' });
+Restaurant.belongsTo(Place, { onDelete: 'cascade' }); 
 Hotel.belongsTo(Place, { onDelete: 'cascade' });
 Activity.belongsTo(Place, { onDelete: 'cascade' });
 
