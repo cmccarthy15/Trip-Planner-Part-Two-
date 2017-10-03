@@ -1,7 +1,5 @@
 const express = require('express');
 const app = express();
-//const Sequelize = require('sequelize');
-//const {INTEGER, STRING, TEXT, VIRTUAL, ARRAY} = Sequelize;
 
 const path = require('path');
 const morgan = require('morgan');
@@ -14,7 +12,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
 
 app.use( (req, res, next) => {
   var err = new Error('Not Found');
