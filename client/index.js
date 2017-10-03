@@ -12,3 +12,12 @@ const map = new mapboxgl.Map({
 
 const marker = buildMarker('activities', [-74.009, 40.705]);
 marker.addTo(map);
+
+
+/*  Build models using the seed data
+ *  Use seeded database to populate options
+ *  Allow user to select and add options and add them to itinerary
+ *     Zoom to that location on the map
+ *  Be able to delete itinerary items
+ * ... eventually save so they can access their itinerary
+ */
