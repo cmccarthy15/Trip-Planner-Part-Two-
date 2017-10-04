@@ -13,12 +13,15 @@ const map = new mapboxgl.Map({
 const marker = buildMarker('activities', [-74.009, 40.705]);
 marker.addTo(map);
 
+const selectIds = ['hotels-choices', 'restaurants-choices', 'activities-choices'];
+const buttonIds = ['hotels-add', 'restaurants-add', 'activities-add'];
+
 fetch('/api/attractions')
 .then(result => result.json())
 .then(data => {
-  const parentIds = ['hotels-choices', 'restaurants-choices', 'activities-choices'];
+  console.log('data: ', data);
   for (var i = 0; i < data.length; i++){
-    createAndAddOptions(parentIds[i], data[i]);
+    createAndAddOptions(selectIds[i], data[i]);
   }
 })
 .catch(console.error);
@@ -32,6 +35,33 @@ function createAndAddOptions(parentId, optionArr){
     parent.appendChild(newNode);
   });
 }
+
+
+let buttons = buttonIds.map( id => document.getElementById(id));
+console.log(buttons);
+
+
+let hotelButton = buttons[0];
+let restaurantButton = buttons[1];
+let activityButton = buttons[2];
+
+hotelButton.onclick = () => {
+  var hotels = document.getElementById('hotels-choices');
+  var selection = hotels.options[hotels.selectedIndex].value;
+  console.log('hotel: ', selection);
+};
+
+restaurantButton.onclick = () => {
+  var restaurants = document.getElementById('restaurants-choices');
+  var selection = restaurants.options[restaurants.selectedIndex].value;
+  console.log('restaurants: ', selection);
+};
+
+activityButton.onclick = () => {
+  var activities = document.getElementById('activities-choices');
+  var selection = activities.options[activities.selectedIndex].value;
+  console.log('activities: ', selection);
+};
 
 // array of three arrays hotels, activities, and restaurants (in that order)
 // select ids are hotels-choices, restaurants-choices, activities-choices
