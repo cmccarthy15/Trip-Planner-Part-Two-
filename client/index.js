@@ -19,8 +19,16 @@ const map = new mapboxgl.Map({
 // removeButton.classList.add('remove-btn');
 // removeButton.innerHTML = 'x';
 
+const attractionTypes = ['hotels', 'restaurants', 'activities'];
+const attractionsObj = {
+    hotels: [],
+    restaurants: [],
+    attractions: []
+}; //this will hold the arrays from the original fetch
+// then we won't need any additional fetches
+
 fetch('/api/attractions')
-.then(result => result.json())
+.then(result => result.json()) // can destructure this so data is an object
 .then(data => {
     const selectIds = ['hotels-choices', 'restaurants-choices', 'activities-choices'];
     for (var i = 0; i < data.length; i++){
@@ -39,8 +47,8 @@ function createAndAddOptions(parentId, optionArr){
   });
 }
 
-const optPanel = document.getElementById('options-panel');
-optPanel.onclick = function(event) {
+const optionPanel = document.getElementById('options-panel');
+optionPanel.onclick = function(event) {
   let target = event.target;
   if (target.classList.contains('options-btn')){
     let type = target.id.slice(0, target.id.indexOf('-'));

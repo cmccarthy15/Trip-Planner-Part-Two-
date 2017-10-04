@@ -75,5 +75,8 @@ const Restaurant = db.define('restaurant', {
 Restaurant.belongsTo(Place, { onDelete: 'cascade' });
 Hotel.belongsTo(Place, { onDelete: 'cascade' });
 Activity.belongsTo(Place, { onDelete: 'cascade' });
+// doing these associations in this direction
+// only add methods to Restaurant, Hotel and Activity
+
 
 module.exports = { db, Hotel, Restaurant, Place, Activity };
