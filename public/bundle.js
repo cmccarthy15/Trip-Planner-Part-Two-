@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -528,14 +528,41 @@ module.exports={"$version":8,"$root":{"version":{"required":true,"type":"enum","
 
 
 //# sourceMappingURL=mapbox-gl.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { Marker } = __webpack_require__(0);
+
+const iconURLs = {
+  hotels: "http://i.imgur.com/D9574Cu.png",
+  restaurants: "http://i.imgur.com/cqR6pUI.png",
+  activities: "http://i.imgur.com/WbMOfMl.png"
+};
+
+const buildMarker = (type, coords) => {
+  if (!iconURLs.hasOwnProperty(type)) {
+    type = "activities";
+  }
+  const markerEl = document.createElement("div");
+  markerEl.style.backgroundSize = "contain";
+  markerEl.style.width = "32px";
+  markerEl.style.height = "37px";
+  markerEl.style.backgroundImage = `url(${iconURLs[type]})`;
+  return new Marker(markerEl).setLngLat(coords);
+};
+
+module.exports = buildMarker;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
 const mapboxgl = __webpack_require__(0);
-const buildMarker = __webpack_require__(3);
+const buildMarker = __webpack_require__(1);
 const createItinerary = __webpack_require__(4);
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiY21jY2FydGh5MTUiLCJhIjoiY2o4YnFiN3RyMDBuNjJ3c2Y4dzhkMnIzNyJ9.ebxoBjxotfIr5-5EIsZ1hA';
@@ -646,7 +673,7 @@ optPanel.onclick = function(event) {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 var g;
@@ -673,37 +700,10 @@ module.exports = g;
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const { Marker } = __webpack_require__(0);
-
-const iconURLs = {
-  hotels: "http://i.imgur.com/D9574Cu.png",
-  restaurants: "http://i.imgur.com/cqR6pUI.png",
-  activities: "http://i.imgur.com/WbMOfMl.png"
-};
-
-const buildMarker = (type, coords) => {
-  if (!iconURLs.hasOwnProperty(type)) {
-    type = "activities";
-  }
-  const markerEl = document.createElement("div");
-  markerEl.style.backgroundSize = "contain";
-  markerEl.style.width = "32px";
-  markerEl.style.height = "37px";
-  markerEl.style.backgroundImage = `url(${iconURLs[type]})`;
-  return new Marker(markerEl).setLngLat(coords);
-};
-
-module.exports = buildMarker;
-
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const buildMarker = __webpack_require__(3);
+const buildMarker = __webpack_require__(1);
 
 var removeButton = document.createElement('BUTTON');
 removeButton.classList.add('remove-btn');
@@ -711,13 +711,14 @@ removeButton.innerHTML = 'x';
 
 
 function createItinerary(data, type, map) {
+  //Add elements to DOM
   let remNode = updateItineraryDOM(data, type);
 
-  //Add marker
+  //Add marker to map
   let newMarker = addMarker(data, type, map);
 
-  // event handler for remove button
-  // resets the map's zoom, removes the marker and itinerary item
+  //Create event handler for remove button
+  //Which resets the map's zoom, removes the marker and itinerary item
   remNode.onclick = function () {
       map.flyTo({
           center: [-74.009, 40.705],

@@ -6,13 +6,14 @@ removeButton.innerHTML = 'x';
 
 
 function createItinerary(data, type, map) {
+  //Add elements to DOM
   let remNode = updateItineraryDOM(data, type);
 
-  //Add marker
+  //Add marker to map
   let newMarker = addMarker(data, type, map);
 
-  // event handler for remove button
-  // resets the map's zoom, removes the marker and itinerary item
+  //Create event handler for remove button
+  //Which resets the map's zoom, removes the marker and itinerary item
   remNode.onclick = function () {
       map.flyTo({
           center: [-74.009, 40.705],
