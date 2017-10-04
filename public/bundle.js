@@ -552,7 +552,7 @@ const map = new mapboxgl.Map({
 const marker = buildMarker('activities', [-74.009, 40.705]);
 marker.addTo(map);
 
-const selectIds = ['hotels-choices', 'restaurants-choices', 'activities-choices'];
+
 
 
 var removeButton = document.createElement("BUTTON");
@@ -562,9 +562,10 @@ removeButton.innerHTML = "x";
 fetch('/api/attractions')
 .then(result => result.json())
 .then(data => {
-  for (var i = 0; i < data.length; i++){
-    createAndAddOptions(selectIds[i], data[i]);
-  }
+    const selectIds = ['hotels-choices', 'restaurants-choices', 'activities-choices'];
+    for (var i = 0; i < data.length; i++){
+        createAndAddOptions(selectIds[i], data[i]);
+    }
 })
 .catch(console.error);
 
