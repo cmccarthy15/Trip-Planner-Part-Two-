@@ -536,11 +536,9 @@ module.exports={"$version":8,"$root":{"version":{"required":true,"type":"enum","
 
 const mapboxgl = __webpack_require__(0);
 const buildMarker = __webpack_require__(3);
+const createItinerary = __webpack_require__(4);
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiY21jY2FydGh5MTUiLCJhIjoiY2o4YnFiN3RyMDBuNjJ3c2Y4dzhkMnIzNyJ9.ebxoBjxotfIr5-5EIsZ1hA';
-
-//const { db, Hotel, Place, Activity, Restaurant } = require("../server/models");
-//const tables = [Hotel, Restaurant, Activity];
 
 const map = new mapboxgl.Map({
   container: 'map',
@@ -552,12 +550,10 @@ const map = new mapboxgl.Map({
 const marker = buildMarker('activities', [-74.009, 40.705]);
 marker.addTo(map);
 
-
-
-
-var removeButton = document.createElement("BUTTON");
-removeButton.classList.add("remove-btn");
-removeButton.innerHTML = "x";
+// UNCOMMENT TO USE THE CREATE ITINERARY DEFINED IN THIS FILE
+// var removeButton = document.createElement('BUTTON');
+// removeButton.classList.add('remove-btn');
+// removeButton.innerHTML = 'x';
 
 fetch('/api/attractions')
 .then(result => result.json())
@@ -589,35 +585,64 @@ optPanel.onclick = function(event) {
         .then(result => {
             return result.json();
         }).then(data => {
-            const parent = document.getElementById(type + '-list');
-            let divNode = document.createElement('DIV');
-            let pNode = document.createElement('SPAN');
-            pNode.innerHTML = data.name;
-            divNode.appendChild(pNode);
-            let remNode = removeButton.cloneNode(true);
-            divNode.appendChild(remNode);
-            parent.appendChild(divNode);
-            //Add marker
-            var newMarker = buildMarker(type, data.place.location);
-            newMarker.addTo(map);
-            map.flyTo({
-                center: data.place.location,
-                zoom: 15,
-                curve: 1.8
-            });
-            remNode.onclick = function () {
-                newMarker.remove();
-                this.parentElement.remove();
-                map.flyTo({
-                    center: [-74.009, 40.705],
-                    zoom: 12,
-                    speed: 1
-                });
-            };
+            createItinerary(data, type, map);
         })
         .catch(console.error);
   }
 };
+
+// UNCOMMENT TO USE THE CREATE ITINERARY DEFINED IN THIS FILE
+// AND TAKE OUT MAP FROM THE CALL ON LINE 52
+
+
+// function createItinerary(data, type) {
+//     let remNode = updateItineraryDOM(data, type);
+
+//     //Add marker
+//     let newMarker = addMarker(data, type);
+
+//     // event handler for remove button
+//     // resets the map's zoom, removes the marker and itinerary item
+//     remNode.onclick = function () {
+//         map.flyTo({
+//             center: [-74.009, 40.705],
+//             zoom: 12,
+//             speed: 1
+//         });
+//         newMarker.remove();
+//         this.parentElement.remove();
+//     };
+// }
+
+// function updateItineraryDOM(data, type){
+//     // construct all elements
+//     const parent = document.getElementById(type + '-list');
+//     let divNode = document.createElement('DIV');
+//     let pNode = document.createElement('SPAN');
+
+//     // give pNode the attraction's name and append to div
+//     pNode.innerHTML = data.name;
+//     divNode.appendChild(pNode);
+
+//     // clone our removeButton and append to div
+//     // append div to the parent / itinerary section
+//     let remNode = removeButton.cloneNode(true);
+//     divNode.appendChild(remNode);
+//     parent.appendChild(divNode);
+
+//     return remNode;
+// }
+
+// function addMarker(data, type){
+//     var newMarker = buildMarker(type, data.place.location);
+//     newMarker.addTo(map);
+//     map.flyTo({
+//         center: data.place.location,
+//         zoom: 15,
+//         curve: 1.8
+//     });
+//     return newMarker;
+// }
 
 
 /***/ }),
@@ -672,6 +697,69 @@ const buildMarker = (type, coords) => {
 };
 
 module.exports = buildMarker;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const buildMarker = __webpack_require__(3);
+
+var removeButton = document.createElement('BUTTON');
+removeButton.classList.add('remove-btn');
+removeButton.innerHTML = 'x';
+
+
+function createItinerary(data, type, map) {
+  let remNode = updateItineraryDOM(data, type);
+
+  //Add marker
+  let newMarker = addMarker(data, type, map);
+
+  // event handler for remove button
+  // resets the map's zoom, removes the marker and itinerary item
+  remNode.onclick = function () {
+      map.flyTo({
+          center: [-74.009, 40.705],
+          zoom: 12,
+          speed: 1
+      });
+      newMarker.remove();
+      this.parentElement.remove();
+  };
+}
+
+function updateItineraryDOM(data, type){
+  // construct all elements
+  const parent = document.getElementById(type + '-list');
+  let divNode = document.createElement('DIV');
+  let pNode = document.createElement('SPAN');
+
+  // give pNode the attraction's name and append to div
+  pNode.innerHTML = data.name;
+  divNode.appendChild(pNode);
+
+  // clone our removeButton and append to div
+  // append div to the parent / itinerary section
+  let remNode = removeButton.cloneNode(true);
+  divNode.appendChild(remNode);
+  parent.appendChild(divNode);
+
+  return remNode;
+}
+
+function addMarker(data, type, map){
+  var newMarker = buildMarker(type, data.place.location);
+  newMarker.addTo(map);
+  map.flyTo({
+      center: data.place.location,
+      zoom: 15,
+      curve: 1.8
+  });
+  return newMarker;
+}
+
+module.exports = createItinerary;
 
 
 /***/ })
