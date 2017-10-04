@@ -4,7 +4,7 @@ const router = express.Router();
 const {db, Hotel, Place, Activity, Restaurant} = require("./models");
 
 
-router.get('/', (req, res, next) => {
+router.get('/attractions', (req, res, next) => {
   Promise.all([Hotel.findAll({include: [Place]}), Activity.findAll({include: [Place]}), Restaurant.findAll({include: [Place]})])
   .then( arr => res.status(200).json(arr))
   .catch(next);

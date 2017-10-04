@@ -13,6 +13,30 @@ const map = new mapboxgl.Map({
 const marker = buildMarker('activities', [-74.009, 40.705]);
 marker.addTo(map);
 
+fetch('/api/attractions')
+.then(result => result.json())
+.then(data => {
+  const parentIds = ['hotels-choices', 'restaurants-choices', 'activities-choices'];
+  for (var i = 0; i < data.length; i++){
+    createAndAddOptions(parentIds[i], data[i]);
+  }
+})
+.catch(console.error);
+
+function createAndAddOptions(parentId, optionArr){
+  const parent = document.getElementById(parentId);
+  optionArr.forEach( option => {
+    let newNode = document.createElement('OPTION');
+    newNode.value = option.name;
+    newNode.text = option.name;
+    parent.appendChild(newNode);
+  });
+}
+
+// array of three arrays hotels, activities, and restaurants (in that order)
+// select ids are hotels-choices, restaurants-choices, activities-choices
+//  <option value="value1">Value 1</option>  --> options need value and the text
+
 
 /*  Build models using the seed data
  *  Use seeded database to populate options
