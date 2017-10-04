@@ -11,8 +11,8 @@ const map = new mapboxgl.Map({
   style: 'mapbox://styles/mapbox/streets-v10' // mapbox has lots of different map styles available.
 });
 
-const marker = buildMarker('activities', [-74.009, 40.705]);
-marker.addTo(map);
+// const marker = buildMarker('activities', [-74.009, 40.705]);
+// marker.addTo(map);
 
 // UNCOMMENT TO USE THE CREATE ITINERARY DEFINED IN THIS FILE
 // var removeButton = document.createElement('BUTTON');

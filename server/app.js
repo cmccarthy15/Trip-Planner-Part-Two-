@@ -15,6 +15,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+/* could also do...
+... or path.resolve
+ * app.get('/', (req, res, next) =>{
+ *  res.sendFile(path.join(__dirname, '../public/index.html'_));
+ * })
+ * BUT you'll need the static middleware in order to let index html
+ * have access to the files it depends on like bundle.js and style.css
+ */
+
 app.use('/api', apiRouter);
 
 app.use( (req, res, next) => {
@@ -42,5 +51,4 @@ app.listen(port, function() {
       console.error('Trouble right here in River City', err, err.stack);
     });
 });
-
 

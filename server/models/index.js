@@ -3,8 +3,6 @@ const {INTEGER, STRING, TEXT, VIRTUAL, ARRAY, FLOAT} = Sequelize;
 
 const db = new Sequelize('postgres://localhost:5432/trip-planner', {logging: false});
 
-
-
 const Hotel = db.define('hotel', {
     name: {
         type: STRING,
@@ -15,18 +13,18 @@ const Hotel = db.define('hotel', {
         allowNull: false,
         validate: {
             max: 5,
-            min:0
+            min: 0
         }
     },
     amenities: {
-        type: STRING        
+        type: STRING
     }
 });
 
 const Place = db.define('place', {
     address: {
         type: STRING,
-        allowNull:false
+        allowNull: false
     },
     city: {
         type: STRING,
@@ -34,7 +32,7 @@ const Place = db.define('place', {
     },
     state: {
         type: STRING,
-        allowNull:false
+        allowNull: false
     },
     phone: {
         type: STRING
@@ -74,7 +72,7 @@ const Restaurant = db.define('restaurant', {
     }
 });
 
-Restaurant.belongsTo(Place, { onDelete: 'cascade' }); 
+Restaurant.belongsTo(Place, { onDelete: 'cascade' });
 Hotel.belongsTo(Place, { onDelete: 'cascade' });
 Activity.belongsTo(Place, { onDelete: 'cascade' });
 
